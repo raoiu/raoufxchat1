@@ -3,15 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع مع فيديو وموسيقى</title>
+    <title>RAOUF X CHAT</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
             font-family: Arial, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .screen-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .screen-overlay h1 {
+            font-size: 50px;
+            color: white;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.6),
+                         0 0 10px rgba(255, 255, 255, 0.8),
+                         0 0 15px rgba(255, 255, 255, 1),
+                         0 0 20px rgba(255, 255, 255, 1.2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes fadeInBox {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .video-background {
@@ -24,94 +71,30 @@
             z-index: -1;
         }
 
-        .start-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 30px;
-            z-index: 9999;
-            opacity: 1;
-            transition: opacity 1s ease;
-        }
-
-        .start-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .welcome {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 50px;
-            font-style: italic;
-            font-weight: bold;
-            color: #FFD700;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            z-index: 10;
-            animation: fadeIn 2s ease, colorChange 4s infinite;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        @keyframes colorChange {
-            0% { color: #FFD700; }
-            25% { color: #FF4500; }
-            50% { color: #32CD32; }
-            75% { color: #1E90FF; }
-            100% { color: #FFD700; }
-        }
-
         .content {
-            position: relative;
-            z-index: 1;
-            color: white;
             text-align: center;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            height: 100%;
-            display: none;
-        }
-
-        .top-box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.4);
-            padding: 40px 50px;
+            color: white;
             border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
             width: 400px;
-            animation: zoomIn 1s ease;
-        }
-
-        @keyframes zoomIn {
-            0% { transform: scale(0.8) translate(-50%, -50%); opacity: 0; }
-            100% { transform: scale(1) translate(-50%, -50%); opacity: 1; }
+            background: rgba(0, 0, 0, 0.6);
+            position: relative;
+            display: none;
+            animation: fadeInBox 1s ease-out;
         }
 
         .profile-image {
+            position: relative;
             width: 120px;
             height: 120px;
+            margin: 0 auto;
             border-radius: 50%;
             overflow: hidden;
-            margin-right: 20px;
-            z-index: 1;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                        0 0 20px rgba(255, 255, 255, 1.2),
+                        0 0 30px rgba(255, 255, 255, 1.5);
         }
 
         .profile-image img {
@@ -120,175 +103,129 @@
             object-fit: cover;
         }
 
-        .top-box h1 {
-            font-size: 36px;
-            margin: 0;
-        }
-
-        .status {
-            font-size: 20px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .links-box {
-            position: absolute;
-            top: calc(50% + 250px);
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(255, 255, 255, 0.3);
-            padding: 15px 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .links-box.show {
-            opacity: 1;
-        }
-
-        .links-box a {
-            color: white;
-            text-decoration: none;
+        h1 {
+            font-size: 30px;
             margin: 10px 0;
-            display: block;
-            font-size: 18px;
-            transition: color 0.3s ease, transform 0.3s ease;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.6),
+                         0 0 10px rgba(255, 255, 255, 0.8),
+                         0 0 15px rgba(255, 255, 255, 1);
         }
 
-        .links-box a:hover {
-            text-decoration: underline;
-            transform: scale(1.1);
+        .social-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
 
-        .links-box a.youtube:hover { color: #FF0000; }
-        .links-box a.tiktok:hover { color: #00F2F2; }
-        .links-box a.instagram:hover { color: #C13584; }
-        .links-box a.discord:hover { color: #5865F2; }
-
-        .audio-control {
-            position: absolute;
-            top: 20px;
-            left: 20px; /* تغيير المكان إلى الجزء الأيسر */
-            z-index: 20;
+        .social-links a {
             color: white;
-            font-size: 25px;
-            cursor: pointer;
-            display: flex; /* تعديل هنا لتكون الأيقونات في خط واحد */
+            font-size: 32px;
+            text-decoration: none;
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        .social-links a:hover:nth-child(1) { color: #E1306C; }
+        .social-links a:hover:nth-child(2) { color: #000000; }
+        .social-links a:hover:nth-child(3) { color: #FF0000; }
+        .social-links a:hover:nth-child(4) { color: #7289DA; }
+
+        .volume-control {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
             align-items: center;
-        }
-
-        .audio-control i {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .audio-control:hover i {
-            color: #FFD700;
-            transform: scale(1.1);
-            transition: transform 0.2s;
+            gap: 10px;
         }
 
         .volume-slider {
-            width: 100px;
-            margin-left: 10px;
-            appearance: none;
-            background: rgba(255, 255, 255, 0.6);
-            height: 5px;
-            outline: none;
+            width: 150px;
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 5px;
-            cursor: pointer;
         }
 
-        .volume-slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 15px;
-            height: 15px;
-            background: #FFD700;
-            border-radius: 50%;
+        .volume-icon {
+            color: white;
+            font-size: 24px;
             cursor: pointer;
-        }
-
-        .volume-slider:hover {
-            background: rgba(255, 255, 255, 0.8);
         }
     </style>
 </head>
 <body>
+    <div class="screen-overlay" id="overlay">
+        <h1>Click to Enter</h1>
+    </div>
+
     <video class="video-background" autoplay muted loop>
         <source src="mylivewallpapers-com-Sad-Itachi-FHD.mp4" type="video/mp4">
     </video>
 
-    <div class="start-screen" id="startScreen">
-        <h1>Click to Enter</h1>
-    </div>
-
     <div class="content" id="content">
-        <div class="welcome">Welcome !</div>
-        <div class="top-box">
-            <div class="profile-image">
-                <img src="circular_image.png" alt="صورة دائرية">
-            </div>
-            <div>
-                <h1>RAOUF X CHAT</h1>
-                <p class="status">last seen 13 hours ago</p>
-            </div>
+        <div class="profile-image">
+            <img src="circular_image.png" alt="Profile Picture">
+        </div>
+        <h1>RAOUF X CHAT</h1>
+        <div>Welcome All</div>
+
+        <div class="social-links">
+            <a href="https://www.instagram.com/raouf_.lb2/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@raouf_.x._chat" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.youtube.com/@RAOUFxCHAT" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://discord.gg/DYxmstBgfv" target="_blank"><i class="fab fa-discord"></i></a>
         </div>
 
-        <div class="links-box" id="linksBox">
-            <a href="https://www.youtube.com/@RAOUFxCHAT" class="youtube" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-            <a href="https://www.tiktok.com/@raouf_.x._chat" class="tiktok" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
-            <a href="https://www.instagram.com/raouf_.lb2/" class="instagram" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="https://discord.gg/6QFwrFjN" class="discord" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+        <div class="volume-control">
+            <i class="fas fa-volume-up volume-icon" id="volumeIcon"></i>
+            <input type="range" min="0" max="100" value="100" class="volume-slider" id="volumeSlider">
         </div>
-    </div>
-
-    <audio id="backgroundAudio" loop>
-        <source src="RAOUF_19.mp3" type="audio/mp3">
-    </audio>
-
-    <div class="audio-control" id="audioControl">
-        <i class="fas fa-volume-up" id="volumeIcon"></i>
-        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
     </div>
 
     <script>
-        document.getElementById('startScreen').addEventListener('click', function() {
-            this.classList.add('hidden');
-            document.getElementById('content').style.display = 'block';
-            document.getElementById('linksBox').classList.add('show');
-        });
-
-        const audio = document.getElementById('backgroundAudio');
-        const audioControl = document.getElementById('audioControl');
+        const overlay = document.getElementById('overlay');
+        const content = document.getElementById('content');
+        const audio = new Audio('RAOUF_19.mp3');
         const volumeSlider = document.getElementById('volumeSlider');
         const volumeIcon = document.getElementById('volumeIcon');
-
         let isMuted = false;
-        
-        // Function to toggle mute/unmute
-        function toggleMute() {
-            isMuted = !isMuted;
-            audio.muted = isMuted;
-            volumeIcon.classList.toggle('fa-volume-mute', isMuted);
-            volumeIcon.classList.toggle('fa-volume-up', !isMuted);
-        }
 
-        // Change volume when slider is adjusted
-        volumeSlider.addEventListener('input', function() {
-            if (!isMuted) {
-                audio.volume = volumeSlider.value / 100;
+        overlay.addEventListener('click', () => {
+            overlay.style.animation = 'fadeOut 0.5s ease-out';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                content.style.display = 'block';
+                audio.play();
+            }, 500);
+        });
+
+        volumeSlider.addEventListener('input', () => {
+            const volume = volumeSlider.value / 100;
+            audio.volume = volume;
+            if (volume > 0) {
+                isMuted = false;
+                audio.muted = false;
+                updateVolumeIcon();
             }
         });
 
-        // Initial audio settings
-        volumeSlider.value = audio.volume * 100;
-        volumeIcon.classList.toggle('fa-volume-mute', audio.muted);
-        volumeIcon.classList.toggle('fa-volume-up', !audio.muted);
+        volumeIcon.addEventListener('click', () => {
+            isMuted = !isMuted;
+            audio.muted = isMuted;
+            updateVolumeIcon();
+        });
 
-        audioControl.addEventListener('click', toggleMute);
+        function updateVolumeIcon() {
+            if (isMuted || audio.volume === 0) {
+                volumeIcon.classList.remove('fa-volume-up');
+                volumeIcon.classList.add('fa-volume-mute');
+            } else {
+                volumeIcon.classList.remove('fa-volume-mute');
+                volumeIcon.classList.add('fa-volume-up');
+            }
+        }
     </script>
 </body>
 </html>
