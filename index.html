@@ -23,21 +23,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 1s ease-out;
         }
 
         .screen-overlay h1 {
             font-size: 50px;
             color: white;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.6),
-                         0 0 10px rgba(255, 255, 255, 0.8),
-                         0 0 15px rgba(255, 255, 255, 1),
-                         0 0 20px rgba(255, 255, 255, 1.2);
+            text-shadow: 0 0 10px #ff6ec7, 0 0 20px #ff6ec7, 0 0 30px #ff6ec7;
+            animation: glow 2s infinite alternate;
         }
 
         @keyframes fadeIn {
@@ -45,19 +43,12 @@
             to { opacity: 1; }
         }
 
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        @keyframes fadeInBox {
+        @keyframes glow {
             from {
-                opacity: 0;
-                transform: scale(0.8);
+                text-shadow: 0 0 10px #ff6ec7, 0 0 20px #ff6ec7, 0 0 30px #ff6ec7;
             }
             to {
-                opacity: 1;
-                transform: scale(1);
+                text-shadow: 0 0 20px #ff6ec7, 0 0 40px #ff6ec7, 0 0 60px #ff6ec7;
             }
         }
 
@@ -73,28 +64,47 @@
 
         .content {
             text-align: center;
-            color: white;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
-            width: 400px;
-            background: rgba(0, 0, 0, 0.6);
-            position: relative;
+            width: 90%;
+            max-width: 400px;
             display: none;
             animation: fadeInBox 1s ease-out;
+            border: 5px solid transparent;
+            background-clip: padding-box;
+            animation: rgbBorder 1.5s infinite alternate;
+        }
+
+        @keyframes fadeInBox {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rgbBorder {
+            0% { border-color: red; }
+            20% { border-color: yellow; }
+            40% { border-color: green; }
+            60% { border-color: cyan; }
+            80% { border-color: blue; }
+            100% { border-color: magenta; }
         }
 
         .profile-image {
-            position: relative;
             width: 120px;
             height: 120px;
             margin: 0 auto;
             border-radius: 50%;
             overflow: hidden;
             border: 3px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-                        0 0 20px rgba(255, 255, 255, 1.2),
-                        0 0 30px rgba(255, 255, 255, 1.5);
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
 
         .profile-image img {
@@ -103,12 +113,15 @@
             object-fit: cover;
         }
 
-        h1 {
-            font-size: 30px;
-            margin: 10px 0;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.6),
-                         0 0 10px rgba(255, 255, 255, 0.8),
-                         0 0 15px rgba(255, 255, 255, 1);
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            }
+            100% {
+                transform: scale(1.1);
+                box-shadow: 0 0 30px rgba(255, 255, 255, 1);
+            }
         }
 
         .social-links {
@@ -122,18 +135,14 @@
             color: white;
             font-size: 32px;
             text-decoration: none;
-            transition: transform 0.3s, color 0.3s;
+            transition: transform 0.3s, color 0.3s, background 0.3s;
         }
 
         .social-links a:hover {
             transform: scale(1.2);
         }
 
-        .social-links a:hover:nth-child(1) { color: #E1306C; }
-        .social-links a:hover:nth-child(2) { color: #000000; }
-        .social-links a:hover:nth-child(3) { color: #FF0000; }
-        .social-links a:hover:nth-child(4) { color: #7289DA; }
-
+        /* Volume Control */
         .volume-control {
             margin-top: 20px;
             display: flex;
@@ -160,9 +169,14 @@
         <h1>Click to Enter</h1>
     </div>
 
-    <video class="video-background" autoplay muted loop>
+    <video class="video-background" autoplay muted loop id="background-video">
         <source src="mylivewallpapers-com-Sad-Itachi-FHD.mp4" type="video/mp4">
     </video>
+
+    <audio id="background-audio" autoplay>
+        <source src="RAOUF_19.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <div class="content" id="content">
         <div class="profile-image">
@@ -170,28 +184,34 @@
         </div>
         <h1>RAOUF X CHAT</h1>
         <div>Welcome All</div>
-
         <div class="social-links">
-            <a href="https://www.instagram.com/raouf_.lb2/" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.tiktok.com/@raouf_.x._chat" target="_blank"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.youtube.com/@RAOUFxCHAT" target="_blank"><i class="fab fa-youtube"></i></a>
-            <a href="https://discord.gg/DYxmstBgfv" target="_blank"><i class="fab fa-discord"></i></a>
+            <a href="https://www.instagram.com/raouf_.lb2/" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@raouf_.x._chat" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.youtube.com/@RAOUFxCHAT" target="_blank" class="youtube"><i class="fab fa-youtube"></i></a>
+            <a href="https://discord.gg/DYxmstBgfv" target="_blank" class="discord"><i class="fab fa-discord"></i></a>
         </div>
 
+        <!-- Volume Control Section -->
         <div class="volume-control">
-            <i class="fas fa-volume-up volume-icon" id="volumeIcon"></i>
-            <input type="range" min="0" max="100" value="100" class="volume-slider" id="volumeSlider">
+            <i class="volume-icon fas fa-volume-up" id="volume-icon"></i>
+            <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider" id="volume-slider">
         </div>
     </div>
 
     <script>
         const overlay = document.getElementById('overlay');
         const content = document.getElementById('content');
-        const audio = new Audio('RAOUF_19.mp3');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const volumeIcon = document.getElementById('volumeIcon');
-        let isMuted = false;
+        const audio = document.getElementById('background-audio');
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeIcon = document.getElementById('volume-icon');
 
+        // Loop the audio
+        audio.addEventListener('ended', () => {
+            audio.currentTime = 0;
+            audio.play();
+        });
+
+        // Show content and play audio
         overlay.addEventListener('click', () => {
             overlay.style.animation = 'fadeOut 0.5s ease-out';
             setTimeout(() => {
@@ -201,31 +221,16 @@
             }, 500);
         });
 
+        // Control volume
         volumeSlider.addEventListener('input', () => {
-            const volume = volumeSlider.value / 100;
-            audio.volume = volume;
-            if (volume > 0) {
-                isMuted = false;
-                audio.muted = false;
-                updateVolumeIcon();
-            }
+            audio.volume = volumeSlider.value;
         });
 
         volumeIcon.addEventListener('click', () => {
-            isMuted = !isMuted;
-            audio.muted = isMuted;
-            updateVolumeIcon();
+            audio.muted = !audio.muted;
+            volumeIcon.classList.toggle('fa-volume-mute', audio.muted);
+            volumeIcon.classList.toggle('fa-volume-up', !audio.muted);
         });
-
-        function updateVolumeIcon() {
-            if (isMuted || audio.volume === 0) {
-                volumeIcon.classList.remove('fa-volume-up');
-                volumeIcon.classList.add('fa-volume-mute');
-            } else {
-                volumeIcon.classList.remove('fa-volume-mute');
-                volumeIcon.classList.add('fa-volume-up');
-            }
-        }
     </script>
 </body>
 </html>
